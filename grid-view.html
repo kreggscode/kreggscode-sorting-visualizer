@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Algorithms Grid - KreggsCode</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .header h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header a {
+            color: #fff;
+            text-decoration: underline;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        .controls {
+            background: #111;
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-group label {
+            font-weight: 600;
+            color: #aaa;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        input[type="range"] {
+            width: 100px;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #667eea;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #667eea;
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+
+        .value-display {
+            min-width: 40px;
+            padding: 5px 8px;
+            background: #222;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 600;
+            color: #667eea;
+            font-size: 0.8rem;
+        }
+
+        button {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-size: 0.8rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        /* Grid Container - 3x3 layout like the screenshot */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 15px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .sort-panel {
+            background: #0a1929;
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid #1e3a5f;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sort-panel h3 {
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            color: #4fc3f7;
+            font-weight: 600;
+        }
+
+        .canvas-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            border-radius: 5px;
+            padding: 5px;
+            min-height: 150px;
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 1.1rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .control-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            input[type="range"] {
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎨 9 Sorting Algorithms</h1>
+        <a href="index.html">← Back to Main View</a>
+    </div>
+
+    <div class="controls">
+        <div class="control-group">
+            <label>Size</label>
+            <input type="range" id="arraySize" min="20" max="100" value="50" step="10" title="Array Size">
+            <div class="value-display" id="arraySizeValue">50</div>
+        </div>
+
+        <div class="control-group">
+            <label>Speed</label>
+            <input type="range" id="speed" min="1" max="100" value="20" step="1" title="Animation Speed">
+            <div class="value-display" id="speedValue">20</div>
+        </div>
+
+        <button id="generateBtn">New Array</button>
+        <button id="startBtn">Start All</button>
+        <button id="stopBtn" class="btn-danger">Stop</button>
+    </div>
+
+    <div class="grid-container" id="gridContainer"></div>
+
+    <script src="sorting-visualizer.js"></script>
+    <script src="algorithms.js"></script>
+    <script>
+        // Grid view specific initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            // Create a custom visualizer for grid view
+            const visualizer = new SortingVisualizer();
+            
+            // Show only 9 algorithms like in the screenshot
+            const gridAlgorithms = [
+                'bubble', 'selection', 'insertion',
+                'merge', 'quick', 'heap',
+                'shell', 'radix', 'cocktail'
+            ];
+            
+            visualizer.selectedAlgorithms = gridAlgorithms;
+            visualizer.simultaneousCount = 9;
+            
+            // Override createSortPanels for grid layout
+            visualizer.createSortPanels = function() {
+                const container = document.getElementById('gridContainer');
+                container.innerHTML = '';
+                this.sortPanels.clear();
+
+                gridAlgorithms.forEach(algoId => {
+                    const algo = this.algorithms.find(a => a.id === algoId);
+                    if (!algo) return;
+
+                    const panel = document.createElement('div');
+                    panel.className = 'sort-panel';
+                    panel.innerHTML = `
+                        <h3>${algo.name}</h3>
+                        <div class="canvas-container">
+                            <canvas id="canvas-${algoId}"></canvas>
+                        </div>
+                    `;
+
+                    container.appendChild(panel);
+
+                    const canvas = document.getElementById(`canvas-${algoId}`);
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Set canvas size for grid
+                    const containerWidth = panel.querySelector('.canvas-container').clientWidth;
+                    canvas.width = Math.min(400, containerWidth - 10);
+                    canvas.height = 150;
+
+                    this.sortPanels.set(algoId, {
+                        canvas, ctx,
+                        array: [...this.masterArray],
+                        comparisons: 0,
+                        swaps: 0,
+                        startTime: 0,
+                        isComplete: false
+                    });
+
+                    this.draw(algoId);
+                });
+            };
+
+            // Update stats display (simplified for grid)
+            visualizer.updateStats = function(algoId) {
+                // Stats are hidden in grid view for cleaner look
+            };
+
+            // Generate initial array
+            visualizer.generateArray();
+        });
+    </script>
+</body>
+</html>
