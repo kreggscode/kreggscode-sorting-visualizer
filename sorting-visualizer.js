@@ -29,7 +29,7 @@ class SortingVisualizer {
         this.barColor = '#00ff00';
         this.gradientStart = '#00ff00';
         this.gradientEnd = '#00ffff';
-        this.highlightColor = '#ff00ff';
+        this.highlightColor = '#ff0000'; // Red highlight color
         this.completionColor = '#ffffff';
         this.soundEnabled = true;
         this.isRunning = false;
@@ -296,10 +296,12 @@ class SortingVisualizer {
 
             const canvas = document.getElementById(`canvas-${algoId}`);
             const ctx = canvas.getContext('2d');
-            // Fix mobile aspect ratio - make canvas square-ish to prevent elongation
+            // Fix mobile aspect ratio - reduce height so 2 algorithms fit on screen
             const containerWidth = Math.min(800, window.innerWidth - 40);
+            const isMobile = window.innerWidth <= 768;
             canvas.width = containerWidth;
-            canvas.height = Math.min(300, containerWidth * 0.6); // Maintain aspect ratio
+            // Smaller height on mobile so both algorithms are visible
+            canvas.height = isMobile ? Math.min(200, containerWidth * 0.45) : Math.min(300, containerWidth * 0.6);
 
             this.sortPanels.set(algoId, {
                 canvas, ctx,
