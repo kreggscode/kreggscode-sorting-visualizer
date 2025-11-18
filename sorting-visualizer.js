@@ -296,12 +296,10 @@ class SortingVisualizer {
 
             const canvas = document.getElementById(`canvas-${algoId}`);
             const ctx = canvas.getContext('2d');
-            // Fix mobile aspect ratio - reduce height so 2 algorithms fit on screen
+            // Fix mobile aspect ratio - maintain proper width
             const containerWidth = Math.min(800, window.innerWidth - 40);
-            const isMobile = window.innerWidth <= 768;
             canvas.width = containerWidth;
-            // Smaller height on mobile so both algorithms are visible
-            canvas.height = isMobile ? Math.min(200, containerWidth * 0.45) : Math.min(300, containerWidth * 0.6);
+            canvas.height = Math.min(300, containerWidth * 0.6); // Back to original height
 
             this.sortPanels.set(algoId, {
                 canvas, ctx,
@@ -357,7 +355,8 @@ class SortingVisualizer {
         const maxValue = Math.max(...array);
 
         array.forEach((value, index) => {
-            const barHeight = (value / maxValue) * (canvas.height - 20);
+            // Remove bottom padding to eliminate black space - use full canvas height
+            const barHeight = (value / maxValue) * canvas.height;
             const x = index * barWidth;
             const y = canvas.height - barHeight;
             let color;
