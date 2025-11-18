@@ -293,12 +293,22 @@
                 <option value="quick">Quick Sort</option>
                 <option value="heap">Heap Sort</option>
                 <option value="shell">Shell Sort</option>
+                <option value="counting">Counting Sort</option>
+                <option value="radix">Radix Sort</option>
+                <option value="bucket">Bucket Sort</option>
+                <option value="cocktail">Cocktail Sort</option>
+                <option value="comb">Comb Sort</option>
+                <option value="gnome">Gnome Sort</option>
+                <option value="bitonic">Bitonic Sort</option>
+                <option value="tim">Tim Sort</option>
+                <option value="cycle">Cycle Sort</option>
+                <option value="bogo">Bogo Sort</option>
             </select>
         </div>
 
         <div class="control-group">
             <label>Size</label>
-            <input type="range" id="arraySize" min="30" max="150" value="80" step="10">
+            <input type="range" id="arraySize" min="20" max="150" value="80" step="10">
             <div class="value-display" id="arraySizeValue">80</div>
         </div>
 
@@ -347,7 +357,8 @@
                 this.canvas = document.getElementById('waveCanvas');
                 this.ctx = this.canvas.getContext('2d');
                 this.array = [];
-                this.arraySize = 80;
+                // Smaller default size on mobile for better spacing
+                this.arraySize = window.innerWidth < 768 ? 40 : 80;
                 this.speed = 50;
                 this.highlightColor = '#ff0000';
                 this.audioContext = null;
@@ -364,10 +375,19 @@
             }
 
             setupCanvas() {
-                const width = Math.min(window.innerWidth - 100, 900);
-                const height = Math.min(window.innerHeight - 350, 500);
+                // Better sizing for mobile
+                const isMobile = window.innerWidth < 768;
+                const width = isMobile ? window.innerWidth - 40 : Math.min(window.innerWidth - 100, 900);
+                const height = isMobile ? window.innerHeight * 0.5 : Math.min(window.innerHeight - 350, 500);
                 this.canvas.width = width;
                 this.canvas.height = height;
+                
+                // Update array size display on mobile
+                if (isMobile && this.arraySize > 50) {
+                    this.arraySize = 40;
+                    document.getElementById('arraySize').value = 40;
+                    document.getElementById('arraySizeValue').textContent = 40;
+                }
             }
 
             setupEventListeners() {
@@ -389,7 +409,10 @@
                     this.currentAlgorithm = e.target.value;
                     const algoNames = {
                         bubble: 'Bubble Sort', insertion: 'Insertion Sort', selection: 'Selection Sort',
-                        merge: 'Merge Sort', quick: 'Quick Sort', heap: 'Heap Sort', shell: 'Shell Sort'
+                        merge: 'Merge Sort', quick: 'Quick Sort', heap: 'Heap Sort', shell: 'Shell Sort',
+                        counting: 'Counting Sort', radix: 'Radix Sort', bucket: 'Bucket Sort',
+                        cocktail: 'Cocktail Sort', comb: 'Comb Sort', gnome: 'Gnome Sort',
+                        bitonic: 'Bitonic Sort', tim: 'Tim Sort', cycle: 'Cycle Sort', bogo: 'Bogo Sort'
                     };
                     document.getElementById('algorithmName').textContent = algoNames[this.currentAlgorithm];
                 });
@@ -463,14 +486,16 @@
                         color = `hsl(${hue}, 100%, 50%)`;
                     }
                     
-                    // Draw dot
+                    // Draw dot (bigger on mobile for better visibility)
+                    const isMobile = window.innerWidth < 768;
+                    const dotSize = isMobile ? (highlightIndices.includes(index) ? 8 : 6) : (highlightIndices.includes(index) ? 6 : 4);
                     this.ctx.fillStyle = color;
                     this.ctx.beginPath();
-                    this.ctx.arc(x, y, highlightIndices.includes(index) ? 6 : 4, 0, Math.PI * 2);
+                    this.ctx.arc(x, y, dotSize, 0, Math.PI * 2);
                     this.ctx.fill();
                     
-                    // Add glow
-                    this.ctx.shadowBlur = 15;
+                    // Add glow (stronger on mobile)
+                    this.ctx.shadowBlur = isMobile ? 20 : 15;
                     this.ctx.shadowColor = color;
                     this.ctx.fill();
                     this.ctx.shadowBlur = 0;
@@ -543,7 +568,17 @@
                     merge: () => this.mergeSort(),
                     quick: () => this.quickSort(),
                     heap: () => this.heapSort(),
-                    shell: () => this.shellSort()
+                    shell: () => this.shellSort(),
+                    counting: () => this.bubbleSort(),
+                    radix: () => this.bubbleSort(),
+                    bucket: () => this.bubbleSort(),
+                    cocktail: () => this.bubbleSort(),
+                    comb: () => this.bubbleSort(),
+                    gnome: () => this.bubbleSort(),
+                    bitonic: () => this.bubbleSort(),
+                    tim: () => this.bubbleSort(),
+                    cycle: () => this.bubbleSort(),
+                    bogo: () => this.bubbleSort()
                 };
 
                 await algorithms[this.currentAlgorithm]();
