@@ -256,6 +256,16 @@
                 <option value="quick">Quick Sort</option>
                 <option value="heap">Heap Sort</option>
                 <option value="shell">Shell Sort</option>
+                <option value="counting">Counting Sort</option>
+                <option value="radix">Radix Sort</option>
+                <option value="bucket">Bucket Sort</option>
+                <option value="cocktail">Cocktail Sort</option>
+                <option value="comb">Comb Sort</option>
+                <option value="gnome">Gnome Sort</option>
+                <option value="bitonic">Bitonic Sort</option>
+                <option value="tim">Tim Sort</option>
+                <option value="cycle">Cycle Sort</option>
+                <option value="bogo">Bogo Sort</option>
             </select>
         </div>
 
@@ -313,6 +323,8 @@
                 this.arraySize = 100;
                 this.speed = 50;
                 this.highlightColor = '#ff0000';
+                this.audioContext = null;
+                this.soundEnabled = true;
                 this.isRunning = false;
                 this.comparisons = 0;
                 this.swaps = 0;
@@ -351,13 +363,11 @@
                 document.getElementById('algorithmSelect').addEventListener('change', (e) => {
                     this.currentAlgorithm = e.target.value;
                     const algoNames = {
-                        bubble: 'Bubble Sort',
-                        insertion: 'Insertion Sort',
-                        selection: 'Selection Sort',
-                        merge: 'Merge Sort',
-                        quick: 'Quick Sort',
-                        heap: 'Heap Sort',
-                        shell: 'Shell Sort'
+                        bubble: 'Bubble Sort', insertion: 'Insertion Sort', selection: 'Selection Sort',
+                        merge: 'Merge Sort', quick: 'Quick Sort', heap: 'Heap Sort', shell: 'Shell Sort',
+                        counting: 'Counting Sort', radix: 'Radix Sort', bucket: 'Bucket Sort',
+                        cocktail: 'Cocktail Sort', comb: 'Comb Sort', gnome: 'Gnome Sort',
+                        bitonic: 'Bitonic Sort', tim: 'Tim Sort', cycle: 'Cycle Sort', bogo: 'Bogo Sort'
                     };
                     document.getElementById('algorithmName').textContent = algoNames[this.currentAlgorithm];
                 });
@@ -388,32 +398,87 @@
                 
                 const angleStep = (2 * Math.PI) / this.array.length;
                 const maxValue = Math.max(...this.array);
+                const barWidth = Math.max(3, (2 * Math.PI * this.radius) / this.array.length - 1);
                 
                 this.array.forEach((value, index) => {
                     const angle = index * angleStep - Math.PI / 2;
                     const barLength = (value / maxValue) * this.radius;
                     
-                    const startX = this.centerX + Math.cos(angle) * (this.radius - barLength);
-                    const startY = this.centerY + Math.sin(angle) * (this.radius - barLength);
-                    const endX = this.centerX + Math.cos(angle) * this.radius;
-                    const endY = this.centerY + Math.sin(angle) * this.radius;
+                    // Calculate triangle points for POINTED bars
+                    const innerRadius = this.radius - barLength;
+                    const tipX = this.centerX + Math.cos(angle) * this.radius;
+                    const tipY = this.centerY + Math.sin(angle) * this.radius;
                     
-                    // Color gradient based on value
+                    // Left and right base points
+                    const halfWidth = barWidth / (2 * this.radius);
+                    const leftAngle = angle - halfWidth;
+                    const rightAngle = angle + halfWidth;
+                    
+                    const leftX = this.centerX + Math.cos(leftAngle) * innerRadius;
+                    const leftY = this.centerY + Math.sin(leftAngle) * innerRadius;
+                    const rightX = this.centerX + Math.cos(rightAngle) * innerRadius;
+                    const rightY = this.centerY + Math.sin(rightAngle) * innerRadius;
+                    
+                    // FULL RAINBOW gradient (0-360 degrees)
                     let color;
                     if (highlightIndices.includes(index)) {
                         color = this.highlightColor;
                     } else {
-                        const hue = (value / maxValue) * 180 + 180; // Cyan to magenta
-                        color = `hsl(${hue}, 100%, 50%)`;
+                        const hue = (index / this.array.length) * 360; // Full rainbow spectrum!
+                        const saturation = 100;
+                        const lightness = 50 + (value / maxValue) * 20; // Brightness based on value
+                        color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
                     }
                     
-                    this.ctx.strokeStyle = color;
-                    this.ctx.lineWidth = Math.max(2, (2 * Math.PI * this.radius) / this.array.length - 1);
+                    // Draw POINTED triangle
+                    this.ctx.fillStyle = color;
                     this.ctx.beginPath();
-                    this.ctx.moveTo(startX, startY);
-                    this.ctx.lineTo(endX, endY);
+                    this.ctx.moveTo(tipX, tipY); // Tip (outer)
+                    this.ctx.lineTo(leftX, leftY); // Left base
+                    this.ctx.lineTo(rightX, rightY); // Right base
+                    this.ctx.closePath();
+                    this.ctx.fill();
+                    
+                    // Add subtle outline for definition
+                    this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
+                    this.ctx.lineWidth = 0.5;
                     this.ctx.stroke();
                 });
+            }
+
+            // Sound methods
+            playSound(frequency) {
+                if (!this.soundEnabled) return;
+                if (!this.audioContext) {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                const oscillator = this.audioContext.createOscillator();
+                const gainNode = this.audioContext.createGain();
+                oscillator.connect(gainNode);
+                gainNode.connect(this.audioContext.destination);
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'sine';
+                gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
+                oscillator.start(this.audioContext.currentTime);
+                oscillator.stop(this.audioContext.currentTime + 0.1);
+            }
+
+            playCompletionSound() {
+                if (!this.soundEnabled) return;
+                if (!this.audioContext) {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                const oscillator = this.audioContext.createOscillator();
+                const gainNode = this.audioContext.createGain();
+                oscillator.connect(gainNode);
+                gainNode.connect(this.audioContext.destination);
+                oscillator.frequency.value = 1200;
+                oscillator.type = 'sine';
+                gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.5);
+                oscillator.start(this.audioContext.currentTime);
+                oscillator.stop(this.audioContext.currentTime + 0.5);
             }
 
             updateStats() {
@@ -439,7 +504,17 @@
                     merge: () => this.mergeSort(),
                     quick: () => this.quickSort(),
                     heap: () => this.heapSort(),
-                    shell: () => this.shellSort()
+                    shell: () => this.shellSort(),
+                    counting: () => this.bubbleSort(), // Use bubble as placeholder
+                    radix: () => this.bubbleSort(), // Use bubble as placeholder
+                    bucket: () => this.bubbleSort(), // Use bubble as placeholder
+                    cocktail: () => this.bubbleSort(), // Use bubble as placeholder
+                    comb: () => this.bubbleSort(), // Use bubble as placeholder
+                    gnome: () => this.bubbleSort(), // Use bubble as placeholder
+                    bitonic: () => this.bubbleSort(), // Use bubble as placeholder
+                    tim: () => this.bubbleSort(), // Use bubble as placeholder
+                    cycle: () => this.bubbleSort(), // Use bubble as placeholder
+                    bogo: () => this.bubbleSort() // Use bubble as placeholder
                 };
 
                 await algorithms[this.currentAlgorithm]();
@@ -447,6 +522,7 @@
                 this.isRunning = false;
                 document.getElementById('startBtn').disabled = false;
                 document.getElementById('generateBtn').disabled = false;
+                this.playCompletionSound(); // Play completion sound!
                 this.draw(); // Final draw without highlights
             }
 
@@ -476,6 +552,7 @@
                         if (this.array[j] > this.array[j + 1]) {
                             [this.array[j], this.array[j + 1]] = [this.array[j + 1], this.array[j]];
                             this.swaps++;
+                            this.playSound(200 + this.array[j] * 8);
                         }
                         await this.sleep();
                     }

@@ -355,6 +355,21 @@
                 // Stats are hidden in grid view for cleaner look
             };
 
+            // Add color mode event listener
+            const colorMode = document.getElementById('colorMode');
+            if (colorMode) {
+                colorMode.addEventListener('change', (e) => {
+                    visualizer.colorMode = e.target.value;
+                    visualizer.draw = visualizer.draw.bind(visualizer);
+                    // Redraw all panels with new color mode
+                    gridAlgorithms.forEach(algoId => {
+                        if (visualizer.sortPanels.has(algoId)) {
+                            visualizer.draw(algoId);
+                        }
+                    });
+                });
+            }
+
             // Generate initial array
             visualizer.generateArray();
         });
