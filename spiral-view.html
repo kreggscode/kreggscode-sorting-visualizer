@@ -434,8 +434,8 @@
                     const y = this.centerY + Math.sin(t) * radius; // Full circle for top-down view
                     const z = Math.sin(t) * 30; // Subtle depth for color variation
                     
-                    // Bar height based on value
-                    const barHeight = (value / maxValue) * 100;
+                    // Bar height based on value (taller bars for better visibility)
+                    const barHeight = (value / maxValue) * 120;
                     
                     // Color based on position in spiral (full rainbow)
                     let color;
@@ -447,8 +447,8 @@
                         color = `hsl(${hue}, 100%, ${lightness}%)`;
                     }
                     
-                    // Draw bar with 3D perspective
-                    const barWidth = 8;
+                    // Draw bar with better visibility (wider on mobile)
+                    const barWidth = window.innerWidth < 768 ? 12 : 8;
                     this.ctx.fillStyle = color;
                     this.ctx.fillRect(x - barWidth/2, y - barHeight, barWidth, barHeight);
                     
@@ -520,6 +520,16 @@
 
             async startSorting() {
                 if (this.isRunning) return;
+                
+                // Initialize audio context on user interaction (required by browsers)
+                if (!this.audioContext && this.soundEnabled) {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    // Resume if suspended (mobile browsers)
+                    if (this.audioContext.state === 'suspended') {
+                        await this.audioContext.resume();
+                    }
+                }
+                
                 this.isRunning = true;
                 this.startTime = Date.now();
                 document.getElementById('startBtn').disabled = true;

@@ -529,6 +529,16 @@
 
             async startSorting() {
                 if (this.isRunning) return;
+                
+                // Initialize audio context on user interaction (required by browsers)
+                if (!this.audioContext && this.soundEnabled) {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    // Resume if suspended (mobile browsers)
+                    if (this.audioContext.state === 'suspended') {
+                        await this.audioContext.resume();
+                    }
+                }
+                
                 this.isRunning = true;
                 this.startTime = Date.now();
                 document.getElementById('startBtn').disabled = true;
