@@ -111,6 +111,22 @@
             background: transparent;
         }
 
+        select {
+            padding: 8px 12px;
+            background: #222;
+            color: #fff;
+            border: 1px solid #333;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        select option {
+            background: #222;
+            color: #fff;
+        }
+
         button {
             padding: 8px 16px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -232,8 +248,17 @@
 
         <div class="control-group">
             <label>Speed</label>
-            <input type="range" id="speed" min="1" max="100" value="20" step="1" title="Animation Speed">
-            <div class="value-display" id="speedValue">20</div>
+            <input type="range" id="speed" min="1" max="500" value="50" step="1" title="Animation Speed">
+            <div class="value-display" id="speedValue">50</div>
+        </div>
+
+        <div class="control-group">
+            <label>Color Mode</label>
+            <select id="colorMode">
+                <option value="gradient">Gradient</option>
+                <option value="solid">Solid</option>
+                <option value="rainbow">Rainbow</option>
+            </select>
         </div>
 
         <div class="control-group">

@@ -391,41 +391,42 @@
 
         /* Visualizer Container */
         #visualizerContainer {
-            padding: 10px; /* Reduced from 20px */
+            padding: 5px; /* Minimal padding */
             display: grid;
-            gap: 10px; /* Reduced from 20px to fit both algorithms */
+            gap: 5px; /* Minimal gap to fit both algorithms */
         }
 
         .sort-panel {
             background: #111;
-            border-radius: 10px;
-            padding: 10px; /* Reduced from 15px */
+            border-radius: 8px;
+            padding: 8px; /* Minimal padding */
             border: 1px solid #333;
         }
 
         .sort-panel h3 {
             text-align: center;
-            margin-bottom: 3px; /* Reduced from 5px */
-            font-size: 1.1rem;
+            margin-bottom: 2px; /* Minimal margin */
+            font-size: 1rem; /* Smaller font */
             color: #fff;
         }
 
         .sort-panel .info {
             text-align: center;
             color: #888;
-            font-size: 0.75rem;
-            margin-bottom: 5px; /* Reduced from 10px */
+            font-size: 0.7rem; /* Smaller font */
+            margin-bottom: 3px; /* Minimal margin */
         }
 
         .canvas-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 250px;
+            min-height: 200px; /* Reduced height */
             background: #000;
-            border-radius: 8px;
-            padding: 0; /* Remove padding to eliminate black space */
-            overflow: hidden; /* Ensure bars touch edges */
+            border-radius: 5px;
+            padding: 0; /* No padding */
+            overflow: hidden;
+            margin: 0; /* No margin */
         }
 
         canvas {
@@ -436,8 +437,8 @@
         .stats {
             display: flex;
             justify-content: space-around;
-            margin-top: 10px;
-            padding-top: 10px;
+            margin-top: 5px;
+            padding-top: 5px;
             border-top: 1px solid #333;
         }
 
@@ -486,13 +487,13 @@
             }
 
             .canvas-container {
-                min-height: 250px;
-                max-height: 350px;
+                min-height: 180px; /* Smaller on mobile */
+                max-height: 220px; /* Limit height */
             }
 
             .sort-panel {
-                padding: 10px;
-                margin-bottom: 15px;
+                padding: 5px; /* Minimal padding on mobile */
+                margin-bottom: 5px; /* Minimal margin */
             }
 
             .stat-value {
