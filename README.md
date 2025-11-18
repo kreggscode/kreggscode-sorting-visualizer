@@ -1,5 +1,6 @@
 # 🎨 KreggsCode Sorting Visualizer
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-View%20Now-brightgreen?style=for-the-badge&logo=github)](https://kreggscode.github.io/kreggscode-sorting-visualizer/)
 [![GitHub](https://img.shields.io/badge/GitHub-kreggscode-blue?logo=github)](https://github.com/kreggscode/kreggscode-sorting-visualizer)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/kreggscode)
