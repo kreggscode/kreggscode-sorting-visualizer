@@ -102,6 +102,15 @@
             font-size: 0.8rem;
         }
 
+        input[type="color"] {
+            width: 50px;
+            height: 35px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: transparent;
+        }
+
         button {
             padding: 8px 16px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -225,6 +234,16 @@
             <label>Speed</label>
             <input type="range" id="speed" min="1" max="100" value="20" step="1" title="Animation Speed">
             <div class="value-display" id="speedValue">20</div>
+        </div>
+
+        <div class="control-group">
+            <label>Highlight</label>
+            <input type="color" id="highlightColor" value="#ff0000" title="Highlight Color">
+        </div>
+
+        <div class="control-group">
+            <label>Complete</label>
+            <input type="color" id="completionColor" value="#ffffff" title="Completion Color">
         </div>
 
         <button id="generateBtn">New Array</button>
