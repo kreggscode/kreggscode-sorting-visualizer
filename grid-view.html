@@ -31,6 +31,12 @@
             margin-bottom: 5px;
         }
 
+        .header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
         .header a {
             color: #fff;
             text-decoration: underline;
@@ -153,6 +159,10 @@
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
 
+        .btn-secondary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
         /* Grid Container - 3x3 layout like the screenshot */
         .grid-container {
             display: grid;
@@ -235,7 +245,8 @@
 </head>
 <body>
     <div class="header">
-        <h1>🎨 9 Sorting Algorithms</h1>
+        <h1>🎨 KreggsCode Sorting Visualizer - Grid View</h1>
+        <p>Visualizing 9 Sorting Algorithms Simultaneously</p>
         <a href="index.html">← Back to Main View</a>
     </div>
 
@@ -274,6 +285,7 @@
         <button id="generateBtn">New Array</button>
         <button id="startBtn">Start All</button>
         <button id="stopBtn" class="btn-danger">Stop</button>
+        <button id="resetBtn" class="btn-secondary">Reset</button>
     </div>
 
     <div class="grid-container" id="gridContainer"></div>
