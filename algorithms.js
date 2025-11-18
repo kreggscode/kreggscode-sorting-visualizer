@@ -18,8 +18,8 @@ SortingVisualizer.prototype.bubbleSort = async function(algoId) {
             await this.sleep();
         }
     }
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
@@ -46,8 +46,8 @@ SortingVisualizer.prototype.insertionSort = async function(algoId) {
         }
         arr[j + 1] = key;
     }
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
@@ -72,16 +72,16 @@ SortingVisualizer.prototype.selectionSort = async function(algoId) {
             this.playSound(200 + arr[i] * 8);
         }
     }
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
 SortingVisualizer.prototype.mergeSort = async function(algoId) {
     const panel = this.sortPanels.get(algoId);
     await this.mergeSortHelper(algoId, 0, panel.array.length - 1);
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
@@ -140,8 +140,8 @@ SortingVisualizer.prototype.merge = async function(algoId, left, mid, right) {
 SortingVisualizer.prototype.quickSort = async function(algoId) {
     const panel = this.sortPanels.get(algoId);
     await this.quickSortHelper(algoId, 0, panel.array.length - 1);
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
@@ -193,8 +193,8 @@ SortingVisualizer.prototype.heapSort = async function(algoId) {
         await this.sleep();
         await this.heapify(algoId, i, 0);
     }
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
@@ -252,8 +252,8 @@ SortingVisualizer.prototype.shellSort = async function(algoId) {
             arr[j] = temp;
         }
     }
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
@@ -286,8 +286,8 @@ SortingVisualizer.prototype.countingSort = async function(algoId) {
     for (let i = 0; i < n && this.isRunning; i++) {
         arr[i] = output[i];
     }
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
@@ -298,8 +298,8 @@ SortingVisualizer.prototype.radixSort = async function(algoId) {
     for (let exp = 1; Math.floor(max / exp) > 0 && this.isRunning; exp *= 10) {
         await this.countingSortByDigit(algoId, exp);
     }
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
@@ -358,8 +358,8 @@ SortingVisualizer.prototype.bucketSort = async function(algoId) {
             await this.sleep();
         }
     }
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
@@ -400,8 +400,8 @@ SortingVisualizer.prototype.cocktailSort = async function(algoId) {
         }
         start++;
     }
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
@@ -431,8 +431,8 @@ SortingVisualizer.prototype.combSort = async function(algoId) {
             await this.sleep();
         }
     }
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
@@ -458,8 +458,8 @@ SortingVisualizer.prototype.gnomeSort = async function(algoId) {
         }
         await this.sleep();
     }
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
@@ -467,8 +467,8 @@ SortingVisualizer.prototype.bitonicSort = async function(algoId) {
     const panel = this.sortPanels.get(algoId);
     const n = panel.array.length;
     await this.bitonicSortHelper(algoId, 0, n, 1);
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
@@ -523,8 +523,8 @@ SortingVisualizer.prototype.timSort = async function(algoId) {
             }
         }
     }
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 
@@ -598,8 +598,8 @@ SortingVisualizer.prototype.cycleSort = async function(algoId) {
             }
         }
     }
-    this.draw(algoId);
     panel.isComplete = true;
+    this.draw(algoId);
     this.playCompletionSound();
 };
 

@@ -215,35 +215,39 @@ class SortingVisualizer {
 
     populateAlgorithmSelector() {
         const selector = document.getElementById('algorithmSelector');
-        this.algorithms.forEach(algo => {
-            const label = document.createElement('label');
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.value = algo.id;
-            checkbox.checked = this.selectedAlgorithms.includes(algo.id);
-            checkbox.addEventListener('change', () => this.updateSelectedAlgorithms());
-            const span = document.createElement('span');
-            span.textContent = `${algo.name} (${algo.complexity})`;
-            label.appendChild(checkbox);
-            label.appendChild(span);
-            selector.appendChild(label);
-        });
+        if (selector) {
+            this.algorithms.forEach(algo => {
+                const label = document.createElement('label');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = algo.id;
+                checkbox.checked = this.selectedAlgorithms.includes(algo.id);
+                checkbox.addEventListener('change', () => this.updateSelectedAlgorithms());
+                const span = document.createElement('span');
+                span.textContent = `${algo.name} (${algo.complexity})`;
+                label.appendChild(checkbox);
+                label.appendChild(span);
+                selector.appendChild(label);
+            });
+        }
     }
 
     updateSelectedAlgorithms() {
         const checkboxes = document.querySelectorAll('#algorithmSelector input[type="checkbox"]');
-        this.selectedAlgorithms = Array.from(checkboxes)
-            .filter(cb => cb.checked)
-            .map(cb => cb.value)
-            .slice(0, this.simultaneousCount === this.algorithms.length ? this.algorithms.length : this.simultaneousCount);
+        if (checkboxes.length > 0) {
+            this.selectedAlgorithms = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value)
+                .slice(0, this.simultaneousCount === this.algorithms.length ? this.algorithms.length : this.simultaneousCount);
 
-        checkboxes.forEach(cb => {
-            if (this.selectedAlgorithms.includes(cb.value)) {
-                cb.checked = true;
-            } else if (this.selectedAlgorithms.length >= this.simultaneousCount) {
-                cb.checked = false;
-            }
-        });
+            checkboxes.forEach(cb => {
+                if (this.selectedAlgorithms.includes(cb.value)) {
+                    cb.checked = true;
+                } else if (this.selectedAlgorithms.length >= this.simultaneousCount) {
+                    cb.checked = false;
+                }
+            });
+        }
         this.createSortPanels();
     }
 
@@ -353,6 +357,7 @@ class SortingVisualizer {
             const y = canvas.height - barHeight;
             let color;
             
+            // Check completion first - this is the most important visual feedback
             if (panel.isComplete) {
                 color = this.completionColor;
             } else if (highlightIndices.includes(index)) {
@@ -421,7 +426,8 @@ class SortingVisualizer {
             gnome: this.gnomeSort.bind(this),
             bitonic: this.bitonicSort.bind(this),
             tim: this.timSort.bind(this),
-            cycle: this.cycleSort.bind(this)
+            cycle: this.cycleSort.bind(this),
+            bogo: this.bogoSort.bind(this)
         };
 
         const sortFunction = sortFunctions[algoId];
