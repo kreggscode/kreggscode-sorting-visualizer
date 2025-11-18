@@ -170,10 +170,28 @@
             padding: 30px;
             min-height: calc(100vh - 250px);
             background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+            position: relative;
+        }
+
+        .canvas-container::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(102, 126, 234, 0.12) 0%, transparent 70%);
+            animation: spiralPulse 4s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes spiralPulse {
+            0%, 100% { opacity: 0.4; transform: scale(0.98); }
+            50% { opacity: 0.8; transform: scale(1.02); }
         }
 
         canvas {
-            box-shadow: 0 0 50px rgba(102, 126, 234, 0.2);
+            box-shadow: 0 0 60px rgba(102, 126, 234, 0.3), 0 0 100px rgba(118, 75, 162, 0.2);
+            position: relative;
+            z-index: 1;
         }
 
         .info-panel {
@@ -231,9 +249,28 @@
                 width: 100%;
             }
 
+            .canvas-container {
+                padding: 20px 10px;
+            }
+
+            canvas {
+                max-width: 95vw !important;
+                max-height: 70vh !important;
+            }
+
             .stats {
-                flex-direction: column;
-                gap: 15px;
+                flex-direction: row;
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+
+            .stat-item {
+                flex: 1;
+                min-width: 80px;
+            }
+
+            .stat-value {
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -392,10 +429,10 @@
                     const t = (index / this.array.length) * spiralTurns * 2 * Math.PI;
                     const radius = (index / this.array.length) * maxRadius;
                     
-                    // Create 3D effect with perspective
+                    // Create top-down spiral view (same on mobile and desktop)
                     const x = this.centerX + Math.cos(t) * radius;
-                    const y = this.centerY + Math.sin(t) * radius * 0.5; // Compressed Y for 3D effect
-                    const z = Math.sin(t) * 50; // Depth
+                    const y = this.centerY + Math.sin(t) * radius; // Full circle for top-down view
+                    const z = Math.sin(t) * 30; // Subtle depth for color variation
                     
                     // Bar height based on value
                     const barHeight = (value / maxValue) * 100;
@@ -421,12 +458,12 @@
                     this.ctx.fillRect(x - barWidth/2, y - barHeight, barWidth, barHeight);
                     this.ctx.shadowBlur = 0;
                     
-                    // Draw connection lines for helix effect
+                    // Draw connection lines for helix effect (top-down view)
                     if (index > 0) {
                         const prevT = ((index - 1) / this.array.length) * spiralTurns * 2 * Math.PI;
                         const prevRadius = ((index - 1) / this.array.length) * maxRadius;
                         const prevX = this.centerX + Math.cos(prevT) * prevRadius;
-                        const prevY = this.centerY + Math.sin(prevT) * prevRadius * 0.5;
+                        const prevY = this.centerY + Math.sin(prevT) * prevRadius; // Full circle
                         
                         this.ctx.strokeStyle = `rgba(102, 126, 234, 0.3)`;
                         this.ctx.lineWidth = 1;
