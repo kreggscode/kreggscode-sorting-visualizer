@@ -474,19 +474,37 @@
             }
 
             .button-group {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            button {
+                padding: 14px 16px;
+                font-size: 0.9rem;
+                white-space: nowrap;
             }
 
             .canvas-container {
-                min-height: 200px;
+                min-height: 250px;
+                max-height: 350px;
             }
 
             .sort-panel {
                 padding: 10px;
+                margin-bottom: 15px;
             }
 
             .stat-value {
                 font-size: 1rem;
+            }
+
+            .controls {
+                max-height: none;
+                overflow-y: visible;
+            }
+
+            .control-group {
+                margin-bottom: 10px;
             }
         }
 

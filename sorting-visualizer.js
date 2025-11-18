@@ -260,6 +260,7 @@ class SortingVisualizer {
 
     createSortPanels() {
         const container = document.getElementById('visualizerContainer');
+        if (!container) return; // Grid view or missing container
         container.innerHTML = '';
         this.sortPanels.clear();
 
@@ -295,8 +296,10 @@ class SortingVisualizer {
 
             const canvas = document.getElementById(`canvas-${algoId}`);
             const ctx = canvas.getContext('2d');
-            canvas.width = Math.min(800, window.innerWidth - 80);
-            canvas.height = 300;
+            // Fix mobile aspect ratio - make canvas square-ish to prevent elongation
+            const containerWidth = Math.min(800, window.innerWidth - 40);
+            canvas.width = containerWidth;
+            canvas.height = Math.min(300, containerWidth * 0.6); // Maintain aspect ratio
 
             this.sortPanels.set(algoId, {
                 canvas, ctx,
