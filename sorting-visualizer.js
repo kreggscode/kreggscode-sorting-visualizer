@@ -106,7 +106,8 @@ class SortingVisualizer {
         const speed = document.getElementById('speed');
         if (speed) {
             speed.addEventListener('input', (e) => {
-                this.speed = parseInt(e.target.value);
+                // Reverse the slider: max value (200) - current value = faster on right
+                this.speed = 201 - parseInt(e.target.value);
                 const display = document.getElementById('speedValue');
                 if (display) display.textContent = this.speed;
             });
@@ -452,6 +453,7 @@ class SortingVisualizer {
     }
 
     async sleep() {
+        // Speed is already reversed in the event listener
         return new Promise(resolve => setTimeout(resolve, this.speed));
     }
 }
